@@ -11,5 +11,11 @@
 
     <artifactId>TestGameServer</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>me.geek.tom</groupId>
+            <artifactId>TestGameCommon</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

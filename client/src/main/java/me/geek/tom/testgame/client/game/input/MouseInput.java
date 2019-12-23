@@ -37,8 +37,6 @@ public class MouseInput {
             leftButtonPressed = button == GLFW_MOUSE_BUTTON_1 && action == GLFW_PRESS;
             rightButtonPressed = button == GLFW_MOUSE_BUTTON_2 && action == GLFW_PRESS;
         });
-
-        glfwSetWindowFocusCallback(window.getWindow(), (windowHandle, isFocused) -> System.out.println(isFocused));
     }
 
     public Vector2f getDisplVec() {

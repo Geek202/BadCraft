@@ -9,5 +9,13 @@
     </parent>
 
     <artifactId>TestGameClient</artifactId>
-    <version>1.0</version>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>me.geek.tom</groupId>
+            <artifactId>TestGameCommon</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
