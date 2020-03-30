@@ -35,7 +35,8 @@ public class Renderer {
         GL.createCapabilities();
 
         GL33.glEnable(GL33.GL_DEPTH_TEST);
-        GL33.glClearColor(1.0f, 0.0f, 1.0f, 0.0f);
+        // (135, 206, 235)
+        GL33.glClearColor(135f/255f, 206f/255f, 235f/255f, 0.0f);
 
         shaderProgram = new ShaderProgram();
         shaderProgram.createVertexShader(Utils.loadResource("/vertex.vs"));

@@ -5,10 +5,14 @@ import me.geek.tom.testgame.server.events.ServerEvents;
 public class Server {
     private ClientConnection[] clientConnections = new ClientConnection[4];
 
-    public static Server INSTANCE = new Server();
+    public static final Server INSTANCE = new Server();
 
     public ClientConnection getConnectionInfo(int clientId) {
         return clientConnections[clientId];
+    }
+
+    public void start() {
+
     }
 
     public int clientJoined(long ip) {

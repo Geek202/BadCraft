@@ -18,12 +18,13 @@ public class Mesh {
     private final int vertexCount;
     private final Texture texture;
 
-    public Mesh(float[] positions, int[] indices, float[] textCoords, Texture texture) {
+    public Mesh(float[] positions, int[] indices, float[] textCoords, Texture texture, float[] lighting) {
         this.texture = texture;
 
         FloatBuffer posBuffer = null;
         FloatBuffer textCoordsBuffer = null;
         IntBuffer indicesBuffer = null;
+        FloatBuffer lightingBuffer = null;
         vertexCount = indices.length;
 
         vboIdList = new ArrayList<>();
@@ -60,6 +61,16 @@ public class Mesh {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboId);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
             MemoryUtil.memFree(indicesBuffer);
+
+            vboIdList.add(vboId);
+
+            // Light VBO
+            vboId = glGenBuffers();
+            lightingBuffer = MemoryUtil.memAllocFloat(lighting.length);
+            lightingBuffer.put(lighting).flip();
+            glBindBuffer(GL_ARRAY_BUFFER, vboId);
+            glBufferData(GL_ARRAY_BUFFER, lightingBuffer, GL_STATIC_DRAW);
+            glVertexAttribPointer(2, 1, GL_FLOAT, false, 0, 0);
 
             vboIdList.add(vboId);
 
@@ -103,6 +114,7 @@ public class Mesh {
         glBindVertexArray(vaoId);
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(2);
 
         glDrawElements(GL_TRIANGLES, getVertexCount(), GL_UNSIGNED_INT, 0);
 

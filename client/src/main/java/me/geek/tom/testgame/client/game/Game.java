@@ -4,11 +4,11 @@ import me.geek.tom.testgame.client.display.DisplayUtil;
 import me.geek.tom.testgame.client.display.Renderer;
 import me.geek.tom.testgame.client.display.Window;
 import me.geek.tom.testgame.client.display.math.Camera;
-import me.geek.tom.testgame.client.display.models.GameItem;
-import me.geek.tom.testgame.client.display.models.Mesh;
-import me.geek.tom.testgame.client.display.models.Texture;
+import me.geek.tom.testgame.client.display.models.*;
 import me.geek.tom.testgame.client.game.exceptions.TerminateException;
 import me.geek.tom.testgame.client.game.input.MouseInput;
+import me.geek.tom.testgame.client.world.Chunk;
+import me.geek.tom.testgame.client.world.ChunkManager;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -23,7 +23,7 @@ public class Game {
 
     public static final int TARGET_UPS = 30;
 
-    private static final float CAMERA_POS_STEP = 0.1f;
+    private static final float CAMERA_POS_STEP = 0.5f;
     private static final float MOUSE_SENSITIVITY = 0.5f;
 
     private final Vector3f cameraInc;
@@ -36,8 +36,11 @@ public class Game {
 
     private Timer timer;
 
-    private Mesh mesh;
-    private GameItem testItem;
+    private Texture texture;
+
+    private List<GameItem> gameItems;
+
+    private ChunkManager chunkManager;
 
     public Game() {
         cameraInc = new Vector3f(0, 0, 0);
@@ -48,10 +51,14 @@ public class Game {
 
     public void init() throws Exception {
         DisplayUtil.setupGl();
-        window = new Window("Test Game", 750, 750);
+        window = new Window("BadCraft 2.0 v3 - Yeah...", 1024, 1024);
         renderer = new Renderer(window);
         mouseInput.init(window);
         renderer.init();
+        gameItems = new ArrayList<>();
+
+        chunkManager = new ChunkManager();
+
         this.createModels();
     }
 
@@ -61,9 +68,6 @@ public class Game {
         float interval = 1f / TARGET_UPS;
 
         boolean running = true;
-
-        List<GameItem> gameItems = new ArrayList<>();
-        gameItems.add(this.testItem);
 
         while (running && !window.shouldClose()) {
             elapsedTime = timer.getElapsedTime();
@@ -84,7 +88,9 @@ public class Game {
 
     public void cleanup() {
         renderer.cleanup();
-        mesh.cleanUp();
+        for (GameItem item : gameItems) {
+            item.getMesh().cleanUp();
+        }
     }
 
     private void sync() {
@@ -130,110 +136,27 @@ public class Game {
 
         // Update camera based on mouse
         if (mouseInput.isRightButtonPressed()) {
+            // @TODO Looking up/down bounds so that the player can't dislocate their head.
             Vector2f rotVec = mouseInput.getDisplVec();
             camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
         }
+
+        buildNextChunk();
+
+        //System.out.println("FPS: " + (1/interval));
+    }
+
+    private void buildNextChunk() {
+        GameItem item = chunkManager.buildNextChunk(texture);
+        if (item != null)
+            gameItems.add(item);
     }
 
     private void createModels() throws Exception {
-        // Create the Mesh
-        float[] positions = new float[] {
-                // V0
-                -0.5f, 0.5f, 0.5f,
-                // V1
-                -0.5f, -0.5f, 0.5f,
-                // V2
-                0.5f, -0.5f, 0.5f,
-                // V3
-                0.5f, 0.5f, 0.5f,
-                // V4
-                -0.5f, 0.5f, -0.5f,
-                // V5
-                0.5f, 0.5f, -0.5f,
-                // V6
-                -0.5f, -0.5f, -0.5f,
-                // V7
-                0.5f, -0.5f, -0.5f,
-
-                // For text coords in top face
-                // V8: V4 repeated
-                -0.5f, 0.5f, -0.5f,
-                // V9: V5 repeated
-                0.5f, 0.5f, -0.5f,
-                // V10: V0 repeated
-                -0.5f, 0.5f, 0.5f,
-                // V11: V3 repeated
-                0.5f, 0.5f, 0.5f,
-
-                // For text coords in right face
-                // V12: V3 repeated
-                0.5f, 0.5f, 0.5f,
-                // V13: V2 repeated
-                0.5f, -0.5f, 0.5f,
-
-                // For text coords in left face
-                // V14: V0 repeated
-                -0.5f, 0.5f, 0.5f,
-                // V15: V1 repeated
-                -0.5f, -0.5f, 0.5f,
-
-                // For text coords in bottom face
-                // V16: V6 repeated
-                -0.5f, -0.5f, -0.5f,
-                // V17: V7 repeated
-                0.5f, -0.5f, -0.5f,
-                // V18: V1 repeated
-                -0.5f, -0.5f, 0.5f,
-                // V19: V2 repeated
-                0.5f, -0.5f, 0.5f,
-        };
-        float[] textCoords = new float[]{
-                0.0f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.5f, 0.0f,
-
-                0.0f, 0.0f,
-                0.5f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-
-                // For text coords in top face
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.0f, 1.0f,
-                0.5f, 1.0f,
-
-                // For text coords in right face
-                0.0f, 0.0f,
-                0.0f, 0.5f,
-
-                // For text coords in left face
-                0.5f, 0.0f,
-                0.5f, 0.5f,
-
-                // For text coords in bottom face
-                0.5f, 0.0f,
-                1.0f, 0.0f,
-                0.5f, 0.5f,
-                1.0f, 0.5f,
-        };
-        int[] indices = new int[]{
-                // Front face
-                0, 1, 3, 3, 1, 2,
-                // Top Face
-                8, 10, 11, 9, 8, 11,
-                // Right face
-                12, 13, 7, 5, 12, 7,
-                // Left face
-                14, 15, 6, 4, 14, 6,
-                // Bottom face
-                16, 18, 19, 17, 16, 19,
-                // Back face
-                4, 6, 7, 5, 4, 7,};
-        Texture texture = new Texture("cube.png");
-
-        mesh = new Mesh(positions, indices, textCoords, texture);
-        this.testItem = new GameItem(mesh);
+        texture = new Texture("cube.png");
+        /*Mesh m = Cube.createCube(texture);
+        GameItem gameItem = new GameItem(m);
+        gameItems.add(gameItem);
+        gameItem.setPosition(-5.0f, 1.0f, 0.0f);*/
     }
 }

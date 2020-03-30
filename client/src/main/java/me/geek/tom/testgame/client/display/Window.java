@@ -17,6 +17,8 @@ public class Window {
     private int width;
     private int height;
 
+    private boolean mouseVisible = false;
+
     public long getWindow() {
         return window;
     }
@@ -45,6 +47,8 @@ public class Window {
         glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
             if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
                 glfwSetWindowShouldClose(window, true);
+            if (key == GLFW_KEY_F8 && action == GLFW_RELEASE)
+                setShowMouse(!isShowingMouse());
         });
 
         try ( MemoryStack stack = stackPush() ) {
@@ -87,6 +91,11 @@ public class Window {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         else
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        this.mouseVisible = shouldShow;
+    }
+
+    public boolean isShowingMouse() {
+        return this.mouseVisible;
     }
 
     public boolean isKeyPressed(int keyCode) {
