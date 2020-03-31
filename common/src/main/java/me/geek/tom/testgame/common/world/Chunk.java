@@ -1,7 +1,6 @@
-package me.geek.tom.testgame.client.world;
+package me.geek.tom.testgame.common.world;
 
-import me.geek.tom.testgame.client.world.worldgen.IGenerator;
-import org.lwjgl.stb.STBPerlin;
+import me.geek.tom.testgame.common.world.worldgen.IGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +9,6 @@ import java.util.Random;
 public class Chunk {
 
     public static final int CHUNK_SIZE = 32;
-    public static final float COORD_SCALE = 64.0f;
-    public static final float HEIGHT_SCALE = 22.0f;
-    public static final int TERRAIN_ADD = 10;
 
     private List<Integer> blocks = new ArrayList<>(CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE);
 
@@ -32,7 +28,7 @@ public class Chunk {
             p.x = x;
             for (int z = 0; z < CHUNK_SIZE; z++) {
                 p.z = z;
-                int maxY = generator.getHeight(x, z, r);
+                int maxY = generator.getHeight(x, z, getChunkPos(), r);
                 for (int y = 0; y <= maxY; y++) {
                     p.y = y;
                     this.setPos(p, 1);
@@ -41,14 +37,8 @@ public class Chunk {
         }
     }
 
-    public int simpleRandomGenerate(int x, int z, Random r) {
+    public int simpleRandomGenerate(int x, int z, ChunkPos pos, Random r) {
         return r.nextInt(Chunk.CHUNK_SIZE);
-    }
-
-    public int perlinSimpleGenerator(int x, int z, Random r) {
-        WorldPos pos = WorldPos.fromChunkBlockPos(new ChunkBlockPos(x, 0, z), getChunkPos());
-        float val = (STBPerlin.stb_perlin_noise3(pos.x / COORD_SCALE, 0, pos.z / COORD_SCALE, 0, 0, 0) +1) * HEIGHT_SCALE / 2;
-        return ((int)val);// + TERRAIN_ADD;
     }
 
     public void setPos(ChunkBlockPos pos, int blockId) {

@@ -1,4 +1,4 @@
-package me.geek.tom.testgame.client.world;
+package me.geek.tom.testgame.common.world;
 
 import java.util.Objects;
 

@@ -54,5 +54,9 @@ public class Camera {
         rotation.x += offsetX;
         rotation.y += offsetY;
         rotation.z += offsetZ;
+        if (rotation.x < -90)
+            rotation.x = -90;
+        if (rotation.x > 90)
+            rotation.x = 90;
     }
 }

@@ -1,0 +1,12 @@
+group 'me.geek.tom'
+version '1.0-SNAPSHOT'
+
+subprojects {
+    project.ext.lwjglVersion = "3.2.3"
+    project.ext.jomlVersion = "1.9.23"
+    project.ext.lwjglNatives = "natives-windows"
+
+    repositories {
+        mavenCentral()
+    }
+}

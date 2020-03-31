@@ -11,5 +11,6 @@
 
     <artifactId>TestGameCommon</artifactId>
 
+    <packaging>jar</packaging>
 
 </project>

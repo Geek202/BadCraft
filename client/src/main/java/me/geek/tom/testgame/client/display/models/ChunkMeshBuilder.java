@@ -1,9 +1,10 @@
 package me.geek.tom.testgame.client.display.models;
 
-import me.geek.tom.testgame.client.world.Chunk;
-import me.geek.tom.testgame.client.world.ChunkBlockPos;
-import me.geek.tom.testgame.client.world.ChunkPos;
-import me.geek.tom.testgame.client.world.Direction;
+
+import me.geek.tom.testgame.common.world.Chunk;
+import me.geek.tom.testgame.common.world.ChunkBlockPos;
+import me.geek.tom.testgame.common.world.ChunkPos;
+import me.geek.tom.testgame.common.world.Direction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +26,10 @@ public class ChunkMeshBuilder {
     };
 
     private float[] BACK_VERTICES = new float[]{
-            0.0f, 1.0f, 0.0f,
-            0.0f, 0.0f, 0.0f,
+            1.0f, 1.0f, 0.0f,
             1.0f, 0.0f, 0.0f,
-            1.0f, 1.0f, 0.0f
+            0.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f
     };
 
     private float[] LEFT_VERTICES = new float[]{

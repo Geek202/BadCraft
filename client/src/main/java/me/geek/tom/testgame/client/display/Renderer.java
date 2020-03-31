@@ -35,6 +35,8 @@ public class Renderer {
         GL.createCapabilities();
 
         GL33.glEnable(GL33.GL_DEPTH_TEST);
+        GL33.glEnable(GL33.GL_CULL_FACE);
+        GL33.glCullFace(GL33.GL_BACK);
         // (135, 206, 235)
         GL33.glClearColor(135f/255f, 206f/255f, 235f/255f, 0.0f);
 

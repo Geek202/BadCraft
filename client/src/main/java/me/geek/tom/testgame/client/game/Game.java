@@ -7,8 +7,7 @@ import me.geek.tom.testgame.client.display.math.Camera;
 import me.geek.tom.testgame.client.display.models.*;
 import me.geek.tom.testgame.client.game.exceptions.TerminateException;
 import me.geek.tom.testgame.client.game.input.MouseInput;
-import me.geek.tom.testgame.client.world.Chunk;
-import me.geek.tom.testgame.client.world.ChunkManager;
+import me.geek.tom.testgame.common.world.ChunkManager;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -40,7 +39,7 @@ public class Game {
 
     private List<GameItem> gameItems;
 
-    private ChunkManager chunkManager;
+    private ClientChunkManager chunkManager;
 
     public Game() {
         cameraInc = new Vector3f(0, 0, 0);
@@ -57,7 +56,7 @@ public class Game {
         renderer.init();
         gameItems = new ArrayList<>();
 
-        chunkManager = new ChunkManager();
+        chunkManager = new ClientChunkManager();
 
         this.createModels();
     }
@@ -99,8 +98,7 @@ public class Game {
         while (timer.getTime() < endTime) {
             try {
                 Thread.sleep(1);
-            } catch (InterruptedException ie) {
-            }
+            } catch (InterruptedException ignored) { }
         }
     }
 
