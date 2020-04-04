@@ -9,20 +9,21 @@ public class ChunkManager {
 
     public static final int WORLD_SIZE = 16; // Size of the world in chunks (width/length)
 
-    private Map<ChunkPos, Chunk> chunks;
+    protected Map<ChunkPos, Chunk> chunks;
 
     public ChunkManager() {
         chunks = new HashMap<>();
         generateChunks();
     }
 
-    private void generateChunks() {
+    protected void generateChunks() {
         for (int x = 0; x < WORLD_SIZE; x++) {
             for (int z = 0; z < WORLD_SIZE; z++) {
                 ChunkPos pos = new ChunkPos(x, z);
                 Chunk chunk = new Chunk(pos);
                 chunks.put(pos, chunk);
                 chunk.generate(new PerlinGenerator());
+                this.chunkGenerated(chunk);
             }
         }
     }
@@ -37,4 +38,6 @@ public class ChunkManager {
     public Chunk getChunk(ChunkPos pos) {
         return chunks.get(pos);
     }
+
+    protected void chunkGenerated(Chunk chunk) {}
 }

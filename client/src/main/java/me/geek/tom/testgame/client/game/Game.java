@@ -1,5 +1,6 @@
 package me.geek.tom.testgame.client.game;
 
+import com.github.steveice10.packetlib.Client;
 import me.geek.tom.testgame.client.display.DisplayUtil;
 import me.geek.tom.testgame.client.display.Renderer;
 import me.geek.tom.testgame.client.display.Window;
@@ -7,6 +8,7 @@ import me.geek.tom.testgame.client.display.math.Camera;
 import me.geek.tom.testgame.client.display.models.*;
 import me.geek.tom.testgame.client.game.exceptions.TerminateException;
 import me.geek.tom.testgame.client.game.input.MouseInput;
+import me.geek.tom.testgame.client.game.network.NetworkClient;
 import me.geek.tom.testgame.common.world.ChunkManager;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -40,15 +42,19 @@ public class Game {
     private List<GameItem> gameItems;
 
     private ClientChunkManager chunkManager;
+    public Client client;
+
+    public static Game INSTANCE;
 
     public Game() {
         cameraInc = new Vector3f(0, 0, 0);
         camera = new Camera();
         mouseInput = new MouseInput();
         timer = new Timer();
+        INSTANCE = this;
     }
 
-    public void init() throws Exception {
+    public void init(String key) throws Exception {
         DisplayUtil.setupGl();
         window = new Window("BadCraft 2.0 v3 - Yeah...", 1024, 1024);
         renderer = new Renderer(window);
@@ -58,6 +64,10 @@ public class Game {
 
         chunkManager = new ClientChunkManager();
 
+        NetworkClient clientRunnable = new NetworkClient(key);
+        new Thread(clientRunnable).start(); // Start a client!
+
+        this.chunkManager.requestChunks();
         this.createModels();
     }
 
@@ -156,5 +166,9 @@ public class Game {
         GameItem gameItem = new GameItem(m);
         gameItems.add(gameItem);
         gameItem.setPosition(-5.0f, 1.0f, 0.0f);*/
+    }
+
+    public ClientChunkManager getChunkManager() {
+        return this.chunkManager;
     }
 }

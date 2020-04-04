@@ -1,12 +1,20 @@
 group 'me.geek.tom'
 version '1.0-SNAPSHOT'
 
+import static org.apache.tools.ant.taskdefs.condition.Os.*
+
 subprojects {
+
     project.ext.lwjglVersion = "3.2.3"
     project.ext.jomlVersion = "1.9.23"
-    project.ext.lwjglNatives = "natives-windows"
+    if (isFamily(FAMILY_WINDOWS))
+        project.ext.lwjglNatives = "natives-macos"
+    else if (isFamily(FAMILY_MAC))
+        project.ext.lwjglNatives = "natives-windows"
 
     repositories {
         mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://geek202.github.io/maven/' }
     }
 }

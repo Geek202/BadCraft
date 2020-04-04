@@ -12,6 +12,15 @@ public class ChunkPos {
         this.z = z;
     }
 
+    public ChunkPos(ChunkPos other) {
+        this.x = other.x;
+        this.z = other.z;
+    }
+
+    public boolean isWithinWorld() {
+        return this.x >= 0 && this.x < ChunkManager.WORLD_SIZE && this.z >= 0 && this.z < ChunkManager.WORLD_SIZE;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof ChunkPos))

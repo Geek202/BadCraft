@@ -2,3 +2,20 @@ plugins {
     id 'java'
 }
 
+dependencies {
+    implementation 'io.netty:netty-all:4.1.48.Final'
+    implementation 'com.github.steveice10:packetlib:master-SNAPSHOT'
+
+    implementation 'me.geek.tom:JavaUtils:1.0-SNAPSHOT'
+
+    implementation 'com.google.guava:guava:28.2-jre'
+
+    implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
+
+    implementation "org.lwjgl:lwjgl"
+    implementation "org.lwjgl:lwjgl-stb:"
+    runtime "org.lwjgl:lwjgl::$lwjglNatives"
+    runtime "org.lwjgl:lwjgl-stb::$lwjglNatives"
+
+    implementation project(":common")
+}

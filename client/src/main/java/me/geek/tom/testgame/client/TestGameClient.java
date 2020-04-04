@@ -10,10 +10,15 @@ public class TestGameClient {
     private Game game;
 
     private void run(String[] args) {
+        if (args.length == 0) {
+            System.err.println("Please define the secret key as the first argument!");
+            return;
+        }
+
         System.out.println("Using LWJGL version " + Version.getVersion());
 
         try {
-            this.init();
+            this.init(args[0]);
             this.loop();
         } catch (TerminateException ignored) {
         } catch (Exception e) {
@@ -25,9 +30,9 @@ public class TestGameClient {
         }
     }
 
-    private void init() throws Exception {
+    private void init(String key) throws Exception {
         game = new Game();
-        game.init();
+        game.init(key);
     }
 
     private void loop() throws Exception {

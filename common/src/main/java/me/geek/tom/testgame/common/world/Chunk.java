@@ -3,6 +3,7 @@ package me.geek.tom.testgame.common.world;
 import me.geek.tom.testgame.common.world.worldgen.IGenerator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -19,6 +20,11 @@ public class Chunk {
         for (int i = 0; i < (CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE); i++) {
             this.blocks.add(0);
         }
+    }
+
+    public Chunk(ChunkPos pos, Integer[] blocks) {
+        this.blocks = Arrays.asList(blocks);
+        this.pos = pos;
     }
 
     public void generate(IGenerator generator) {
@@ -76,5 +82,9 @@ public class Chunk {
 
     public ChunkPos getChunkPos() {
         return pos;
+    }
+
+    public void writeToArray(Integer[] blocks) {
+        this.blocks.toArray(blocks);
     }
 }
