@@ -8,9 +8,9 @@ subprojects {
     project.ext.lwjglVersion = "3.2.3"
     project.ext.jomlVersion = "1.9.23"
     if (isFamily(FAMILY_WINDOWS))
-        project.ext.lwjglNatives = "natives-macos"
-    else if (isFamily(FAMILY_MAC))
         project.ext.lwjglNatives = "natives-windows"
+    else if (isFamily(FAMILY_MAC))
+        project.ext.lwjglNatives = "natives-macos"
 
     repositories {
         mavenCentral()
