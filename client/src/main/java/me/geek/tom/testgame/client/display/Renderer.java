@@ -41,12 +41,11 @@ public class Renderer {
         GL33.glClearColor(135f/255f, 206f/255f, 235f/255f, 0.0f);
 
         shaderProgram = new ShaderProgram();
-        shaderProgram.createVertexShader(Utils.loadResource("/vertex.vs"));
-        shaderProgram.createFragmentShader(Utils.loadResource("/fragment.fs"));
+        shaderProgram.createVertexShader(Utils.loadResource("/chunk_vertex.vs"));
+        shaderProgram.createFragmentShader(Utils.loadResource("/chunk_fragment.fs"));
         shaderProgram.link();
 
-        float aspectRatio = (float) window.getWidth() / window.getHeight();
-        Matrix4f projectionMatrix = new Matrix4f().perspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
+        //float aspectRatio = (float) window.getWidth() / window.getHeight();
     }
 
     public void init() throws Exception {

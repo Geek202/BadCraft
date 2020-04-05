@@ -12,11 +12,18 @@ public class GameItem {
 
     private final Vector3f rotation;
 
+    private boolean isSkybox;
+
     public GameItem(Mesh mesh) {
+        this(mesh, false);
+    }
+
+    public GameItem(Mesh mesh, boolean isSkybox) {
         this.mesh = mesh;
         position = new Vector3f(0, 0, 0);
         scale = 1;
         rotation = new Vector3f(0, 0, 0);
+        this.isSkybox = isSkybox;
     }
 
     public Vector3f getPosition() {

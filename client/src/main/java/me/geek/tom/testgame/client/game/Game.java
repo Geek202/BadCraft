@@ -44,6 +44,8 @@ public class Game {
     private ClientChunkManager chunkManager;
     public Client client;
 
+    private GameItem skybox;
+
     public static Game INSTANCE;
 
     public Game() {
@@ -71,6 +73,7 @@ public class Game {
         this.createModels();
     }
 
+    @SuppressWarnings("ConstantConditions")
     public void gameLoop() throws TerminateException {
         float elapsedTime;
         float accumulator = 0f;
@@ -144,14 +147,14 @@ public class Game {
 
         // Update camera based on mouse
         if (mouseInput.isRightButtonPressed()) {
-            // @TODO Looking up/down bounds so that the player can't dislocate their head.
             Vector2f rotVec = mouseInput.getDisplVec();
             camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
         }
 
         buildNextChunk();
 
-        //System.out.println("FPS: " + (1/interval));
+        Vector3f camPos = camera.getPosition();
+        this.skybox.setPosition(camPos.x, camPos.y, camPos.z);
     }
 
     private void buildNextChunk() {
@@ -162,10 +165,14 @@ public class Game {
 
     private void createModels() throws Exception {
         texture = new Texture("cube.png");
-        /*Mesh m = Cube.createCube(texture);
-        GameItem gameItem = new GameItem(m);
-        gameItems.add(gameItem);
-        gameItem.setPosition(-5.0f, 1.0f, 0.0f);*/
+        Texture t = new Texture("skybox.png");
+        System.out.println("Skybox is texture at: " + t.getId());
+        Mesh m = Cube.createCube(t);
+        GameItem gameItem = new GameItem(m, true);
+        //gameItems.add(gameItem);
+        gameItem.setPosition(0.0f, 0.0f, 0.0f);
+        gameItem.setScale(50.0f);
+        this.skybox = gameItem;
     }
 
     public ClientChunkManager getChunkManager() {

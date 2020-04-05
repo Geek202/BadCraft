@@ -99,7 +99,7 @@ public class ChunkMeshBuilder {
     public ChunkMeshBuilder(Chunk chunk) {
         chunkPos = chunk.getChunkPos();
 
-        System.out.println("Building mesh for: '" + chunkPos + "'");
+        //System.out.println("Building mesh for: '" + chunkPos + "'");
 
         List<Float> positionList = new ArrayList<>();
         List<Integer> indiceList = new ArrayList<>();
