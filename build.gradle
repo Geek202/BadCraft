@@ -11,6 +11,8 @@ subprojects {
         project.ext.lwjglNatives = "natives-windows"
     else if (isFamily(FAMILY_MAC))
         project.ext.lwjglNatives = "natives-macos"
+    else
+        project.ext.lwjglNatives = "natives-linux"
 
     repositories {
         mavenCentral()
